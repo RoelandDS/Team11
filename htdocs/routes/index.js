@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
     host: '173.194.105.180',
     user: 'student',
     password: 'mulestudent',
-    database: 'training',
+    database: 'training'
 });
 
 /* GET home page. */
@@ -23,20 +23,14 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/getqr', function(req, res, next) {
-    connection.connect();
-
     var queryString = 'SELECT * FROM qr_code WHERE img_title = "[CS:GO]"';
 
     connection.query(queryString, function(err, rows, fields) {
         if (err) throw err;
-        console.log('rows: ', rows);
-        console.log('fields: ', fields);
-        return res.json({
-            name: rows[0].img_title,
-            buffer: rows[0].img_data
-        })
+        var img = rows[0].img_data;
+        var buffer = new Buffer(img.toString('base64'), 'base64');
+        return res.write(buffer);
     });
-    connection.end();
 });
 
 router.post('/registerteam', function(req, res, next) {
