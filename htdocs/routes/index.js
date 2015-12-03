@@ -29,7 +29,8 @@ router.get('/getqr', function(req, res, next) {
         if (err) throw err;
         var img = rows[0].img_data;
         var buffer = new Buffer(img.toString('base64'), 'base64');
-        return res.write(buffer);
+        res.write(buffer);
+        res.end();
     });
 });
 
