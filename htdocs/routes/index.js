@@ -38,7 +38,7 @@ router.post('/registerteam', function(req, res, next) {
                     result: 'success'
                 });
             } else {
-            	return next(new Erro('Oops! Something went wrong...'));
+                return next(new Error('Oops! Something went wrong...'));
             }
 
         }
