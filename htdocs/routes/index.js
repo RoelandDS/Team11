@@ -1,20 +1,43 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+    host: '173.194.105.180',
+    user: 'student',
+    password: 'mulestudent',
+    database: 'training',
+});
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
     return res.json({
-                name: 'CS:GO',
-                members: [{
-                    name: 'Helder De Baere'
-                }, {
-                    name: 'Arne Herbots'
-                }]
-            });
+        name: 'CS:GO',
+        members: [{
+            name: 'Helder De Baere'
+        }, {
+            name: 'Arne Herbots'
+        }]
+    });
 });
 
-router.get('')
+router.get('/getqr', function(req, res, next) {
+    connection.connect();
+
+    var queryString = 'SELECT * FROM qr_code WHERE img_title = "[CS:GO]"';
+
+    connection.query(queryString, function(err, rows, fields) {
+        if (err) throw err;
+        console.log('rows: ', rows);
+        console.log('fields: ', fields);
+        return res.json({
+            name: rows[0].img_title,
+            buffer: rows[0].img_data
+        })
+    });
+    connection.end();
+});
 
 router.post('/registerteam', function(req, res, next) {
     request({
